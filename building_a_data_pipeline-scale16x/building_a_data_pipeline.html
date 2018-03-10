@@ -7,19 +7,19 @@
 <style type="text/css">
 .underline { text-decoration: underline; }
 </style>
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
 
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
 
 <link rel="stylesheet" href="sky.css"/>
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
 <!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
     if( window.location.search.match( /print-pdf/gi ) ) {
         var link = document.createElement( 'link' );
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        link.href = 'https://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
         document.getElementsByTagName( 'head' )[0].appendChild( link );
     }
 </script>
@@ -27,13 +27,13 @@
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-background="./images/andrew-simba-gypsy.jpeg"><h1 class="title">Building a Self-Service Data Pipeline with Apache Spark</h1><h2 class="author">Andrew Grangaard</h2><p class="date">Created: 2018-03-10 Sat 11:52</p>
+<section id="sec-title-slide" data-background="./images/andrew-simba-gypsy.jpeg"><h1 class="title">Building a Self-Service Data Pipeline with Apache Spark</h1><h2 class="author">Andrew Grangaard</h2><p class="date">Created: 2018-03-10 Sat 11:56</p>
 </section>
 
 
 <section>
-<section id="slide-org6c0c08f">
-<h2 id="org6c0c08f"><object type="image/svg+xml" data="./images/ziprecruiter-blacktext.svg" class="org-svg">
+<section id="slide-orgf2edaab">
+<h2 id="orgf2edaab"><object type="image/svg+xml" data="./images/ziprecruiter-blacktext.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object></h2>
 <blockquote nil>
 <p>
@@ -65,8 +65,8 @@ and Helping Employers Build Great Companies
 </section>
 </section>
 <section>
-<section id="slide-orge559637">
-<h2 id="orge559637">Business Goal:</h2>
+<section id="slide-org5a4b554">
+<h2 id="org5a4b554">Business Goal:</h2>
 <p>
 Support Data Driven decision Making
 </p>
@@ -89,15 +89,15 @@ Support Data Driven decision Making
 </section>
 </section>
 <section>
-<section id="slide-org6388104">
-<h2 id="org6388104">Data Core: Team Goal</h2>
+<section id="slide-org1109ff1">
+<h2 id="org1109ff1">Data Core: Team Goal</h2>
 <p>
 Scalability of 100x with current team size
 </p>
 
 </section>
-<section id="slide-org47f189c">
-<h3 id="org47f189c">What does that Mean ?</h3>
+<section id="slide-org2650c2f">
+<h3 id="org2650c2f">What does that Mean ?</h3>
 <ul>
 <li>Redshift DB can't handle 100x of raw data
 <ul>
@@ -121,26 +121,26 @@ Forked from Postgresql 8
 
 
 </section>
-<section id="slide-org1deec91">
-<h3 id="org1deec91">Build a Self-Service Streaming Data Platform to Support 20+ dev teams at 100x current usage</h3>
+<section id="slide-org53ead33">
+<h3 id="org53ead33">Build a Self-Service Streaming Data Platform to Support 20+ dev teams at 100x current usage</h3>
 </section>
-<section id="slide-org068d25b">
-<h3 id="org068d25b">Build a Self-Service <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
+<section id="slide-orge6fdb7c">
+<h3 id="orge6fdb7c">Build a Self-Service <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
 </section>
-<section id="slide-org2fb0260">
-<h3 id="org2fb0260">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
+<section id="slide-orgbe6a844">
+<h3 id="orgbe6a844">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
 </section>
-<section id="slide-org6c5d7e1">
-<h3 id="org6c5d7e1">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> dev team at 100x current usage</h3>
+<section id="slide-org0736059">
+<h3 id="org0736059">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> dev team at 100x current usage</h3>
 </section>
-<section id="slide-org97d1567">
-<h3 id="org97d1567">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> <i>Data</i> team at 100x current usage</h3>
+<section id="slide-org64fc07d">
+<h3 id="org64fc07d">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> <i>Data</i> team at 100x current usage</h3>
 
 </section>
 </section>
 <section>
-<section id="slide-orgbca93b8">
-<h2 id="orgbca93b8">Definitions:</h2>
+<section id="slide-org1063d34">
+<h2 id="org1063d34">Definitions:</h2>
 <ul>
 <li>OLTP vs OLAP</li>
 <li>Data Warehouse</li>
@@ -151,8 +151,8 @@ Forked from Postgresql 8
 </ul>
 
 </section>
-<section id="slide-org35a2966">
-<h3 id="org35a2966">OLTP vs OLAP</h3>
+<section id="slide-orgea4351f">
+<h3 id="orgea4351f">OLTP vs OLAP</h3>
 <ul>
 <li>On-Line Transaction Processing
 <ul>
@@ -175,22 +175,22 @@ Forked from Postgresql 8
 </ul>
 
 </section>
-<section id="slide-orga65e0fb">
-<h3 id="orga65e0fb">Data Warehouse</h3>
+<section id="slide-org0db9e51">
+<h3 id="org0db9e51">Data Warehouse</h3>
 <p>
 An OLAP database used for reporting.
 </p>
 </section>
-<section id="slide-org3cf1d24">
-<h3 id="org3cf1d24">ETL</h3>
+<section id="slide-org41e744d">
+<h3 id="org41e744d">ETL</h3>
 <p>
 Extract - Transform - Load
 <img src="./images/etl-diagram.jpg" alt="etl-diagram.jpg" />
 </p>
 
 </section>
-<section id="slide-orgd7006cc">
-<h3 id="orgd7006cc">ETL</h3>
+<section id="slide-org3173e81">
+<h3 id="org3173e81">ETL</h3>
 <dl>
 <dt>Extract</dt><dd>pull data from sources and convert to standardized format</dd>
 <dt>Transform</dt><dd>apply business rules and clean</dd>
@@ -211,8 +211,8 @@ Extract - Transform - Load
 </aside>
 
 </section>
-<section id="slide-orgf8302b5">
-<h3 id="orgf8302b5">Data Lake</h3>
+<section id="slide-org6bc574a">
+<h3 id="org6bc574a">Data Lake</h3>
 <p>
 <i>Artisanal and Unfiltered</i>
 </p>
@@ -232,8 +232,8 @@ schema on write vs on read
 </aside>
 
 </section>
-<section id="slide-org6b43264">
-<h3 id="org6b43264">Data Pipeline</h3>
+<section id="slide-orgdc32e53">
+<h3 id="orgdc32e53">Data Pipeline</h3>
 <p>
 System to collect, clean, query, aggregate and publish data from source to analytic consumer.
 </p>
@@ -245,8 +245,8 @@ System to collect, clean, query, aggregate and publish data from source to analy
 </div>
 
 </section>
-<section id="slide-org30a4756">
-<h3 id="org30a4756">Technologies</h3>
+<section id="slide-org808f71b">
+<h3 id="org808f71b">Technologies</h3>
 <p>
 Mapping of Open Source and Amazon products
 </p>
@@ -296,8 +296,8 @@ Mapping of Open Source and Amazon products
 </table>
 
 </section>
-<section id="slide-orgaf930d6">
-<h3 id="orgaf930d6">Technologies [cont]</h3>
+<section id="slide-org8c2c7eb">
+<h3 id="org8c2c7eb">Technologies [cont]</h3>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -345,12 +345,12 @@ Mapping of Open Source and Amazon products
 </section>
 </section>
 <section>
-<section id="slide-org9417e9c">
-<h2 id="org9417e9c">System Diagrams</h2>
-<div class="outline-text-2" id="text-org9417e9c">
+<section id="slide-org11cbeec">
+<h2 id="org11cbeec">System Diagrams</h2>
+<div class="outline-text-2" id="text-org11cbeec">
 </div></section>
-<section id="slide-orge612a64">
-<h3 id="orge612a64">Where we were</h3>
+<section id="slide-org78c02d0">
+<h3 id="org78c02d0">Where we were</h3>
 
 <div class="figure">
 <p><img src="./images/dw-v1.jpeg" alt="dw-v1.jpeg" />
@@ -372,8 +372,8 @@ Scaling limit: Raw log data overwhelmed primary database
 </aside>
 
 </section>
-<section id="slide-orgf321af3">
-<h3 id="orgf321af3">Where we are</h3>
+<section id="slide-orgdd76a12">
+<h3 id="orgdd76a12">Where we are</h3>
 
 <div class="figure">
 <p><img src="./images/dw-v2.jpeg" alt="dw-v2.jpeg" />
@@ -396,8 +396,8 @@ Scaling limit: Raw log data overwhelmed primary database + Cron management
 </aside>
 
 </section>
-<section id="slide-org602edf2">
-<h3 id="org602edf2">Where we're going</h3>
+<section id="slide-org021b08b">
+<h3 id="org021b08b">Where we're going</h3>
 
 <div class="figure">
 <p><img src="./images/dw-v3.jpeg" alt="dw-v3.jpeg" />
@@ -424,8 +424,8 @@ Scaling limit: ?
 </section>
 </section>
 <section>
-<section id="slide-org125016a">
-<h2 id="org125016a">Data Pipeline Pieces</h2>
+<section id="slide-org2ba7942">
+<h2 id="org2ba7942">Data Pipeline Pieces</h2>
 <ul>
 <li>Ingres</li>
 <li>Storage</li>
@@ -438,8 +438,8 @@ Scaling limit: ?
 </ul>
 
 </section>
-<section id="slide-org8ebaab9">
-<h3 id="org8ebaab9">Ingres: JSON + Kafka</h3>
+<section id="slide-org8a1288b">
+<h3 id="org8a1288b">Ingres: JSON + Kafka</h3>
 <ul>
 <li>All logs generated as json lines</li>
 <li>Logs are tailed and published to Kafka</li>
@@ -461,8 +461,8 @@ Switching to Kafka this week from TreasureData/Fluentd
 </aside>
 
 </section>
-<section id="slide-orgcd1b35e">
-<h3 id="orgcd1b35e">Storage: S3</h3>
+<section id="slide-orga5e565e">
+<h3 id="orga5e565e">Storage: S3</h3>
 <ul>
 <li>Raw logs are source-of-truth for system</li>
 <li>Raw logs are stored in a production-logs bucket</li>
@@ -487,8 +487,8 @@ switching to encrypted bucket was not without incident.
 </aside>
 
 </section>
-<section id="slide-orga21a9b9">
-<h3 id="orga21a9b9">Data Formats</h3>
+<section id="slide-org5f92b1c">
+<h3 id="org5f92b1c">Data Formats</h3>
 <ul>
 <li>json lines for all logs</li>
 <li><a href="http://parquet.apache.org">Apache parquet</a> for derived sources</li>
@@ -509,8 +509,8 @@ parquet is a columnar storage format for hadoop.
 </aside>
 
 </section>
-<section id="slide-orge49d473">
-<h3 id="orge49d473">Queries: Spark and SparkSQL</h3>
+<section id="slide-orgc3bfcd0">
+<h3 id="orgc3bfcd0">Queries: Spark and SparkSQL</h3>
 <ul>
 <li>Spark: Scala and python</li>
 <li>SparkSQL: SQL queries over JDBC</li>
@@ -523,8 +523,8 @@ parquet is a columnar storage format for hadoop.
 </p>
 </div>
 </section>
-<section id="slide-org8bd4c81">
-<h3 id="org8bd4c81">Metastore: AWS Glue Data Catalog</h3>
+<section id="slide-orgcb43730">
+<h3 id="orgcb43730">Metastore: AWS Glue Data Catalog</h3>
 <ul>
 <li>hive-compatible metadata</li>
 <li>Works across SparkSQL, Athena and Spectrum</li>
@@ -538,8 +538,8 @@ parquet is a columnar storage format for hadoop.
 </p>
 </div>
 </section>
-<section id="slide-org0916d4a">
-<h3 id="org0916d4a">Workflow</h3>
+<section id="slide-org6bf250b">
+<h3 id="org6bf250b">Workflow</h3>
 <p>
 Luigi vs Azkaban vs Oozie vs Airflow
 </p>
@@ -573,8 +573,8 @@ Luigi vs Azkaban vs Oozie vs Airflow
 </p>
 
 </section>
-<section id="slide-orgf4a5bb3">
-<h3 id="orgf4a5bb3">Airflow</h3>
+<section id="slide-orga3d0647">
+<h3 id="orga3d0647">Airflow</h3>
 
 <div class="figure">
 <p><img src="./images/airflow.png" alt="airflow.png" />
@@ -590,8 +590,8 @@ defines the work flow but doesn't schedule it to run
 </aside>
 
 </section>
-<section id="slide-org40cab46">
-<h3 id="org40cab46">Scheduling - Jenkins</h3>
+<section id="slide-org30cadbd">
+<h3 id="org30cadbd">Scheduling - Jenkins</h3>
 <ul>
 <li>Automatic and manual triggers</li>
 <li>Compile sources for a workflow into binary artifacts</li>
@@ -616,8 +616,8 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-orga27dc92">
-<h2 id="orga27dc92">Status</h2>
+<section id="slide-org695bcc2">
+<h2 id="org695bcc2">Status</h2>
 
 <div class="figure">
 <p><img src="./images/under-construction.jpg" alt="under-construction.jpg" />
@@ -627,8 +627,8 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-orgc4eeadd">
-<h2 id="orgc4eeadd">QUESTIONS?</h2>
+<section id="slide-orgff9f44b">
+<h2 id="orgff9f44b">QUESTIONS?</h2>
 
 <div class="figure">
 <p><img src="./images/fry-questions.jpg" alt="fry-questions.jpg" />
@@ -638,8 +638,8 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-org1964842">
-<h2 id="org1964842">Contact:</h2>
+<section id="slide-org1114509">
+<h2 id="org1114509">Contact:</h2>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -684,14 +684,14 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-org702f775">
-<h2 id="org702f775">EXTRA</h2>
+<section id="slide-orgae5e6cb">
+<h2 id="orgae5e6cb">EXTRA</h2>
 
 </section>
 </section>
 <section>
-<section id="slide-org3eb5876">
-<h2 id="org3eb5876">What?</h2>
+<section id="slide-org2362bd5">
+<h2 id="org2362bd5">What?</h2>
 <ul>
 <li>aggregation of raw data</li>
 <li>storage of raw data</li>
@@ -703,8 +703,8 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-orgae73ac3">
-<h2 id="orgae73ac3">Summary</h2>
+<section id="slide-org17cbf23">
+<h2 id="org17cbf23">Summary</h2>
 <p>
 I’ll share the architecture we design based on the trade-offs we considered and the choices we’ve made. 
 </p>
@@ -727,8 +727,8 @@ data integrity
 </section>
 </div>
 </div>
-<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
-<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="https://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
 
 <script>
 // Full list of configuration options available here:
@@ -756,8 +756,8 @@ multiplex: {
 
 // Optional libraries used to extend on reveal.js
 dependencies: [
- { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
- { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
 });
 </script>
 </body>
