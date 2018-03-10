@@ -292,8 +292,11 @@ pipelines are tricky, but possible.
 * Contact:
 
 | Twitter | @spazm                               |
+| Github  | spazm                                |
 | Email   | andrew.grangaard+scale2018@gmail.com |
 | Blog    | [[http://spaz.rocks][spaz.rocks]]                           |
+
+https://spazm.github.io/slides/building_a_data_pipeline-scale16x/
 
 [[./images/andrew-simba-gypsy.jpeg]]
 
