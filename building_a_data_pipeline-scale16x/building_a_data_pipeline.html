@@ -27,13 +27,13 @@
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-background="./images/andrew-simba-gypsy.jpeg"><h1 class="title">Building a Self-Service Data Pipeline with Apache Spark</h1><h2 class="author">Andrew Grangaard</h2><p class="date">Created: 2018-03-10 Sat 12:04</p>
+<section id="sec-title-slide" data-background="./images/andrew-simba-gypsy.jpeg"><h1 class="title">Building a Self-Service Data Pipeline with Apache Spark</h1><h2 class="author">Andrew Grangaard</h2><p class="date">Created: 2018-03-10 Sat 12:41</p>
 </section>
 
 
 <section>
-<section id="slide-org76fc4ef">
-<h2 id="org76fc4ef"><object type="image/svg+xml" data="./images/ziprecruiter-blacktext.svg" class="org-svg">
+<section id="slide-org0529c32">
+<h2 id="org0529c32"><object type="image/svg+xml" data="./images/ziprecruiter-blacktext.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object></h2>
 <blockquote nil>
 <p>
@@ -65,8 +65,8 @@ and Helping Employers Build Great Companies
 </section>
 </section>
 <section>
-<section id="slide-org374156a">
-<h2 id="org374156a">Business Goal:</h2>
+<section id="slide-orga9cad50">
+<h2 id="orga9cad50">Business Goal:</h2>
 <p>
 Support Data Driven decision Making
 </p>
@@ -89,15 +89,15 @@ Support Data Driven decision Making
 </section>
 </section>
 <section>
-<section id="slide-org9241a33">
-<h2 id="org9241a33">Data Core: Team Goal</h2>
+<section id="slide-org0fa1569">
+<h2 id="org0fa1569">Data Core: Team Goal</h2>
 <p>
 Scalability of 100x with current team size
 </p>
 
 </section>
-<section id="slide-orgb408fab">
-<h3 id="orgb408fab">What does that Mean ?</h3>
+<section id="slide-org425002c">
+<h3 id="org425002c">What does that Mean ?</h3>
 <ul>
 <li>Redshift DB can't handle 100x of raw data
 <ul>
@@ -121,26 +121,26 @@ Forked from Postgresql 8
 
 
 </section>
-<section id="slide-org5fa4099">
-<h3 id="org5fa4099">Build a Self-Service Streaming Data Platform to Support 20+ dev teams at 100x current usage</h3>
+<section id="slide-org0a846ed">
+<h3 id="org0a846ed">Build a Self-Service Streaming Data Platform to Support 20+ dev teams at 100x current usage</h3>
 </section>
-<section id="slide-org715080c">
-<h3 id="org715080c">Build a Self-Service <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
+<section id="slide-orgaa1e1ed">
+<h3 id="orgaa1e1ed">Build a Self-Service <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
 </section>
-<section id="slide-org4b19406">
-<h3 id="org4b19406">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
+<section id="slide-org5efead9">
+<h3 id="org5efead9">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
 </section>
-<section id="slide-org7b652ab">
-<h3 id="org7b652ab">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> dev team at 100x current usage</h3>
+<section id="slide-org86a54eb">
+<h3 id="org86a54eb">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> dev team at 100x current usage</h3>
 </section>
-<section id="slide-orgb966b90">
-<h3 id="orgb966b90">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> <i>Data</i> team at 100x current usage</h3>
+<section id="slide-org08ea484">
+<h3 id="org08ea484">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> <i>Data</i> team at 100x current usage</h3>
 
 </section>
 </section>
 <section>
-<section id="slide-org60093e7">
-<h2 id="org60093e7">Definitions:</h2>
+<section id="slide-org3cad26d">
+<h2 id="org3cad26d">Definitions:</h2>
 <ul>
 <li>OLTP vs OLAP</li>
 <li>Data Warehouse</li>
@@ -151,8 +151,8 @@ Forked from Postgresql 8
 </ul>
 
 </section>
-<section id="slide-orgee4e191">
-<h3 id="orgee4e191">OLTP vs OLAP</h3>
+<section id="slide-orgf5b81dd">
+<h3 id="orgf5b81dd">OLTP vs OLAP</h3>
 <ul>
 <li>On-Line Transaction Processing
 <ul>
@@ -175,22 +175,22 @@ Forked from Postgresql 8
 </ul>
 
 </section>
-<section id="slide-org10f1db9">
-<h3 id="org10f1db9">Data Warehouse</h3>
+<section id="slide-orgaf49a68">
+<h3 id="orgaf49a68">Data Warehouse</h3>
 <p>
 An OLAP database used for reporting.
 </p>
 </section>
-<section id="slide-org5fc2c81">
-<h3 id="org5fc2c81">ETL</h3>
+<section id="slide-orge1fcd29">
+<h3 id="orge1fcd29">ETL</h3>
 <p>
 Extract - Transform - Load
 <img src="./images/etl-diagram.jpg" alt="etl-diagram.jpg" />
 </p>
 
 </section>
-<section id="slide-org131924b">
-<h3 id="org131924b">ETL</h3>
+<section id="slide-org10aaf9d">
+<h3 id="org10aaf9d">ETL</h3>
 <dl>
 <dt>Extract</dt><dd>pull data from sources and convert to standardized format</dd>
 <dt>Transform</dt><dd>apply business rules and clean</dd>
@@ -211,8 +211,8 @@ Extract - Transform - Load
 </aside>
 
 </section>
-<section id="slide-org4746043">
-<h3 id="org4746043">Data Lake</h3>
+<section id="slide-orga52b904">
+<h3 id="orga52b904">Data Lake</h3>
 <p>
 <i>Artisanal and Unfiltered</i>
 </p>
@@ -232,8 +232,8 @@ schema on write vs on read
 </aside>
 
 </section>
-<section id="slide-orge79c498">
-<h3 id="orge79c498">Data Pipeline</h3>
+<section id="slide-orgf4c7e6a">
+<h3 id="orgf4c7e6a">Data Pipeline</h3>
 <p>
 System to collect, clean, query, aggregate and publish data from source to analytic consumer.
 </p>
@@ -245,8 +245,8 @@ System to collect, clean, query, aggregate and publish data from source to analy
 </div>
 
 </section>
-<section id="slide-org6352275">
-<h3 id="org6352275">Technologies</h3>
+<section id="slide-org8a635e8">
+<h3 id="org8a635e8">Technologies</h3>
 <p>
 Mapping of Open Source and Amazon products
 </p>
@@ -296,8 +296,8 @@ Mapping of Open Source and Amazon products
 </table>
 
 </section>
-<section id="slide-org850734e">
-<h3 id="org850734e">Technologies [cont]</h3>
+<section id="slide-org245c5be">
+<h3 id="org245c5be">Technologies [cont]</h3>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -345,12 +345,12 @@ Mapping of Open Source and Amazon products
 </section>
 </section>
 <section>
-<section id="slide-org907a061">
-<h2 id="org907a061">System Diagrams</h2>
-<div class="outline-text-2" id="text-org907a061">
+<section id="slide-org5d6479a">
+<h2 id="org5d6479a">System Diagrams</h2>
+<div class="outline-text-2" id="text-org5d6479a">
 </div></section>
-<section id="slide-org7b46902">
-<h3 id="org7b46902">Where we were</h3>
+<section id="slide-org73bc3aa">
+<h3 id="org73bc3aa">Where we were</h3>
 
 <div class="figure">
 <p><img src="./images/dw-v1.jpeg" alt="dw-v1.jpeg" />
@@ -372,8 +372,8 @@ Scaling limit: Raw log data overwhelmed primary database
 </aside>
 
 </section>
-<section id="slide-org34061df">
-<h3 id="org34061df">Where we are</h3>
+<section id="slide-orgdf0fb07">
+<h3 id="orgdf0fb07">Where we are</h3>
 
 <div class="figure">
 <p><img src="./images/dw-v2.jpeg" alt="dw-v2.jpeg" />
@@ -396,8 +396,8 @@ Scaling limit: Raw log data overwhelmed primary database + Cron management
 </aside>
 
 </section>
-<section id="slide-orgefc0f60">
-<h3 id="orgefc0f60">Where we're going</h3>
+<section id="slide-org69e04ed">
+<h3 id="org69e04ed">Where we're going</h3>
 
 <div class="figure">
 <p><img src="./images/dw-v3.jpeg" alt="dw-v3.jpeg" />
@@ -424,8 +424,8 @@ Scaling limit: ?
 </section>
 </section>
 <section>
-<section id="slide-orgfc5daea">
-<h2 id="orgfc5daea">Data Pipeline Pieces</h2>
+<section id="slide-orgbb2c099">
+<h2 id="orgbb2c099">Data Pipeline Pieces</h2>
 <ul>
 <li>Ingres</li>
 <li>Storage</li>
@@ -438,8 +438,8 @@ Scaling limit: ?
 </ul>
 
 </section>
-<section id="slide-orgc10b1fc">
-<h3 id="orgc10b1fc">Ingres: JSON + Kafka</h3>
+<section id="slide-org7614c2d">
+<h3 id="org7614c2d">Ingres: JSON + Kafka</h3>
 <ul>
 <li>All logs generated as json lines</li>
 <li>Logs are tailed and published to Kafka</li>
@@ -461,8 +461,8 @@ Switching to Kafka this week from TreasureData/Fluentd
 </aside>
 
 </section>
-<section id="slide-org5d2fb98">
-<h3 id="org5d2fb98">Storage: S3</h3>
+<section id="slide-orgdaee59d">
+<h3 id="orgdaee59d">Storage: S3</h3>
 <ul>
 <li>Raw logs are source-of-truth for system</li>
 <li>Raw logs are stored in a production-logs bucket</li>
@@ -487,8 +487,8 @@ switching to encrypted bucket was not without incident.
 </aside>
 
 </section>
-<section id="slide-org238d755">
-<h3 id="org238d755">Data Formats</h3>
+<section id="slide-org108c3c4">
+<h3 id="org108c3c4">Data Formats</h3>
 <ul>
 <li>json lines for all logs</li>
 <li><a href="http://parquet.apache.org">Apache parquet</a> for derived sources</li>
@@ -509,8 +509,8 @@ parquet is a columnar storage format for hadoop.
 </aside>
 
 </section>
-<section id="slide-org9e551c9">
-<h3 id="org9e551c9">Queries: Spark and SparkSQL</h3>
+<section id="slide-org0f47f24">
+<h3 id="org0f47f24">Queries: Spark and SparkSQL</h3>
 <ul>
 <li>Spark: Scala and python
 <ul>
@@ -527,8 +527,8 @@ parquet is a columnar storage format for hadoop.
 </p>
 </div>
 </section>
-<section id="slide-org77f0d7e">
-<h3 id="org77f0d7e">Metastore: AWS Glue Data Catalog</h3>
+<section id="slide-orgac16e8e">
+<h3 id="orgac16e8e">Metastore: AWS Glue Data Catalog</h3>
 <ul>
 <li>hive-compatible metadata</li>
 <li>Works across SparkSQL, Athena and Spectrum</li>
@@ -542,8 +542,8 @@ parquet is a columnar storage format for hadoop.
 </p>
 </div>
 </section>
-<section id="slide-org63d113b">
-<h3 id="org63d113b">Workflow</h3>
+<section id="slide-org2190aae">
+<h3 id="org2190aae">Workflow</h3>
 <p>
 Luigi vs Azkaban vs Oozie vs Airflow
 </p>
@@ -577,8 +577,8 @@ Luigi vs Azkaban vs Oozie vs Airflow
 </p>
 
 </section>
-<section id="slide-org6651cd4">
-<h3 id="org6651cd4">Airflow</h3>
+<section id="slide-org5789307">
+<h3 id="org5789307">Airflow</h3>
 
 <div class="figure">
 <p><img src="./images/airflow.png" alt="airflow.png" />
@@ -594,8 +594,8 @@ defines the work flow but doesn't schedule it to run
 </aside>
 
 </section>
-<section id="slide-orgfbdd25a">
-<h3 id="orgfbdd25a">Scheduling - Jenkins</h3>
+<section id="slide-org707363a">
+<h3 id="org707363a">Scheduling - Jenkins</h3>
 <ul>
 <li>Automatic and manual triggers</li>
 <li>Compile sources for a workflow into binary artifacts</li>
@@ -618,8 +618,8 @@ pipelines are tricky, but possible.
 </aside>
 
 </section>
-<section id="slide-orgb43d79b">
-<h3 id="orgb43d79b">Egress</h3>
+<section id="slide-org768c8fd">
+<h3 id="org768c8fd">Egress</h3>
 <ul>
 <li>Export aggregated data to redshift as Data Warehouse</li>
 <li>Query Redshift via Periscope for Visualization and Dashboards</li>
@@ -635,19 +635,19 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-org6351c97">
-<h2 id="org6351c97">Status</h2>
+<section id="slide-org43aface">
+<h2 id="org43aface">Status</h2>
 
 <div class="figure">
-<p><img src="./images/under-construction.jpg" alt="under-construction.jpg" />
+<p><img src="./images/dancing-baby.jpg" alt="dancing-baby.jpg" />
 </p>
 </div>
 
 </section>
 </section>
 <section>
-<section id="slide-orgc63a0ac">
-<h2 id="orgc63a0ac">QUESTIONS?</h2>
+<section id="slide-orgab3c0b5">
+<h2 id="orgab3c0b5">QUESTIONS?</h2>
 
 <div class="figure">
 <p><img src="./images/fry-questions.jpg" alt="fry-questions.jpg" />
@@ -657,8 +657,8 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-org59bbc10">
-<h2 id="org59bbc10">Contact:</h2>
+<section id="slide-orgffb6d0a">
+<h2 id="orgffb6d0a">Contact:</h2>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -703,14 +703,14 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-org0274bbd">
-<h2 id="org0274bbd">EXTRA</h2>
+<section id="slide-org4e55375">
+<h2 id="org4e55375">EXTRA</h2>
 
 </section>
 </section>
 <section>
-<section id="slide-org7d5752c">
-<h2 id="org7d5752c">What?</h2>
+<section id="slide-org3118451">
+<h2 id="org3118451">What?</h2>
 <ul>
 <li>aggregation of raw data</li>
 <li>storage of raw data</li>
@@ -722,8 +722,8 @@ pipelines are tricky, but possible.
 </section>
 </section>
 <section>
-<section id="slide-orgfab501a">
-<h2 id="orgfab501a">Summary</h2>
+<section id="slide-org52d603b">
+<h2 id="org52d603b">Summary</h2>
 <p>
 I’ll share the architecture we design based on the trade-offs we considered and the choices we’ve made. 
 </p>

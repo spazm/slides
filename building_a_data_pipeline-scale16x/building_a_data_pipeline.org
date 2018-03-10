@@ -292,7 +292,7 @@ pipelines are tricky, but possible.
 
 * Status
 
-[[./images/under-construction.jpg]]
+[[./images/dancing-baby.jpg]]
 
 * QUESTIONS?
 [[./images/fry-questions.jpg]]
