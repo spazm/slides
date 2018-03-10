@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Building a Self-Service Data Pipeline with Apache Spark</title>
+<meta name="author" content="(Andrew Grangaard)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="sky.css"/>
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./images/andrew-simba-gypsy.jpeg"><h1 class="title">Building a Self-Service Data Pipeline with Apache Spark</h1><h2 class="author">Andrew Grangaard</h2><p class="date">Created: 2018-03-10 Sat 11:42</p>
+</section>
+
+
+<section>
+<section id="slide-orgf5efbae">
+<h2 id="orgf5efbae"><object type="image/svg+xml" data="./images/ziprecruiter-blacktext.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object></h2>
+<blockquote nil>
+<p>
+We’re Helping People Find Great Jobs, <br />
+and Helping Employers Build Great Companies
+</p>
+</blockquote>
+
+<ul>
+<li>Scrappy, Data Driven, Experimental
+<ul>
+<li>Crawl, Walk, Run!</li>
+
+</ul></li>
+<li>Explosive Growth</li>
+
+</ul>
+
+<aside class="notes">
+<ul>
+<li>&gt; 8 Million Jobs</li>
+<li>1 Million Employers</li>
+<li>120 Million Jobseekers</li>
+
+</ul>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgeebeaf8">
+<h2 id="orgeebeaf8">Business Goal:</h2>
+<p>
+Support Data Driven decision Making
+</p>
+
+<ul>
+<li>Collect <b>All</b> the data</li>
+<li>Ad-hoc Analysis for Insight</li>
+<li>Aggegrate for Reporting</li>
+<li>Support business experiments</li>
+<li>Improve MTTIT - Mean Time to Idea Tested</li>
+
+</ul>
+
+
+<div class="figure">
+<p><img src="./images/collect-all-the-data.jpg" alt="collect-all-the-data.jpg" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgd358ef6">
+<h2 id="orgd358ef6">Data Core: Team Goal</h2>
+<p>
+Scalability of 100x with current team size
+</p>
+
+</section>
+<section id="slide-org9307e1c">
+<h3 id="org9307e1c">What does that Mean ?</h3>
+<ul>
+<li>Redshift DB can't handle 100x of raw data
+<ul>
+<li>Stop loading raw data into Redshift DB!</li>
+<li>Generate aggregates and roll-ups outside of Redshift</li>
+<li>Load converted data to Redshift</li>
+
+</ul></li>
+<li>Provide access to raw data for ad-hoc analysis</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+Redshift is Amazon's hosted Data Warehouse.
+<a href="https://aws.amazon.com/redshift/">Amazon Redshift</a>
+Forked from Postgresql 8
+</p>
+
+</aside>
+
+
+</section>
+<section id="slide-org4e5b09f">
+<h3 id="org4e5b09f">Build a Self-Service Streaming Data Platform to Support 20+ dev teams at 100x current usage</h3>
+</section>
+<section id="slide-org7c35d72">
+<h3 id="org7c35d72">Build a Self-Service <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
+</section>
+<section id="slide-org291f34f">
+<h3 id="org291f34f">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support 20+ dev teams at 100x current usage</h3>
+</section>
+<section id="slide-orga3c55f2">
+<h3 id="orga3c55f2">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> dev team at 100x current usage</h3>
+</section>
+<section id="slide-org9feafd9">
+<h3 id="org9feafd9">Build a <del>Self-Service</del> <del>Streaming</del> Data Platform to Support <i>One</i> <i>Data</i> team at 100x current usage</h3>
+
+</section>
+</section>
+<section>
+<section id="slide-org9ba95c9">
+<h2 id="org9ba95c9">Definitions:</h2>
+<ul>
+<li>OLTP vs OLAP</li>
+<li>Data Warehouse</li>
+<li>ETL</li>
+<li>Data Lake</li>
+<li>Technologies</li>
+
+</ul>
+
+</section>
+<section id="slide-org8efa279">
+<h3 id="org8efa279">OLTP vs OLAP</h3>
+<ul>
+<li>On-Line Transaction Processing
+<ul>
+<li>Primary Database</li>
+<li>High number of transactions</li>
+<li>Insert / Update / Delete</li>
+<li>Powers primary application</li>
+
+</ul></li>
+
+<li>On-Line Analytical Processing
+<ul>
+<li>Aggregated data</li>
+<li>Complex Queries</li>
+<li>Long running queries</li>
+<li>Powers reporting</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org998a891">
+<h3 id="org998a891">Data Warehouse</h3>
+<p>
+An OLAP database used for reporting.
+</p>
+</section>
+<section id="slide-orgb87597a">
+<h3 id="orgb87597a">ETL</h3>
+<p>
+Extract - Transform - Load
+<img src="./images/etl-diagram.jpg" alt="etl-diagram.jpg" />
+</p>
+
+</section>
+<section id="slide-org707557c">
+<h3 id="org707557c">ETL</h3>
+<dl>
+<dt>Extract</dt><dd>pull data from sources and convert to standardized format</dd>
+<dt>Transform</dt><dd>apply business rules and clean</dd>
+<dt>Load</dt><dd>Load into data warehouse for reporting 
+<ul>
+<li>Generate roll-ups with SQL</li>
+<li>Run regular and ad-hoc reports against roll-ups</li>
+
+</ul></dd>
+
+</dl>
+
+<aside class="notes">
+<p>
+
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org432eb37">
+<h3 id="org432eb37">Data Lake</h3>
+<p>
+<i>Artisanal and Unfiltered</i>
+</p>
+
+
+<div class="figure">
+<p><img src="./images/datawarehouse-vs-datalake.png" alt="datawarehouse-vs-datalake.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+structured vs unstructured
+schema on write vs on read 
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgc3a452c">
+<h3 id="orgc3a452c">Data Pipeline</h3>
+<p>
+System to collect, clean, query, aggregate and publish data from source to analytic consumer.
+</p>
+
+
+<div class="figure">
+<p><img src="./images/datapipeline.png" alt="datapipeline.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org43d89d4">
+<h3 id="org43d89d4">Technologies</h3>
+<p>
+Mapping of Open Source and Amazon products
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Open Source</th>
+<th scope="col" class="org-left">Amazon Product</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="http://prestodb.io">Presto</a></td>
+<td class="org-left">Athena</td>
+<td class="org-left">Distributed SQL Query Engine</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Redshift Spectrum</td>
+<td class="org-left">Run Redshift queries against S3</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://kafka.apache.org">Kafka</a></td>
+<td class="org-left">Kinesis</td>
+<td class="org-left">Distributed Streaming Platform</td>
+</tr>
+
+<tr>
+<td class="org-left">Ceph, etc</td>
+<td class="org-left">S3</td>
+<td class="org-left">Extensible object/file store</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org73b50da">
+<h3 id="org73b50da">Technologies [cont]</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Open Source</th>
+<th scope="col" class="org-left">Amazon Product</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="http://spark.apache.org">Apache Spark</a></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Engine for large-scale data processing.</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://spark.apache.org/sql">Apache Spark SQL</a></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">module for working with structured data.</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="http://airflow.apache.org">Apache Airflow</a></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">workflow platform</td>
+</tr>
+
+<tr>
+<td class="org-left">Hive Metastore</td>
+<td class="org-left">AWS Glue Data Catalog</td>
+<td class="org-left">central repository to store structural and operational metadata for all your data assets</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+</section>
+<section>
+<section id="slide-org002baae">
+<h2 id="org002baae">System Diagrams</h2>
+<div class="outline-text-2" id="text-org002baae">
+</div></section>
+<section id="slide-org71e0505">
+<h3 id="org71e0505">Where we were</h3>
+
+<div class="figure">
+<p><img src="./images/dw-v1.jpeg" alt="dw-v1.jpeg" />
+</p>
+</div>
+
+<p>
+Scaling limit: Raw log data overwhelmed primary database
+</p>
+
+<aside class="notes">
+<ul>
+<li>Wrote everything to primary (OLTP) database</li>
+<li>Replicated to redshift (OLAP) database</li>
+<li>cron jobs to create aggregates and reports</li>
+
+</ul>
+
+</aside>
+
+</section>
+<section id="slide-org3837e94">
+<h3 id="org3837e94">Where we are</h3>
+
+<div class="figure">
+<p><img src="./images/dw-v2.jpeg" alt="dw-v2.jpeg" />
+</p>
+</div>
+
+<p>
+Scaling limit: Raw log data overwhelmed primary database + Cron management
+</p>
+
+<aside class="notes">
+<ul>
+<li>Removed logging from primary (OLTP) database</li>
+<li>Logging in json to files to fluentd to S3</li>
+<li>Loaded row level log data to Redshift</li>
+<li>cron jobs to create aggregates and reports</li>
+
+</ul>
+
+</aside>
+
+</section>
+<section id="slide-orga5f0228">
+<h3 id="orga5f0228">Where we're going</h3>
+
+<div class="figure">
+<p><img src="./images/dw-v3.jpeg" alt="dw-v3.jpeg" />
+</p>
+</div>
+
+<p>
+Scaling limit: ?
+</p>
+
+<aside class="notes">
+<ul>
+<li>Logging in json to files to kafka to S3</li>
+<li>spark jobs to create roll-ups and aggregrates from raw S3</li>
+<li>Load aggregate data to Redshift</li>
+<li>no more cron jobs (we can dream)</li>
+<li>Need to provide access to raw logs for ad-hoc analysis</li>
+
+</ul>
+
+</aside>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orge798e0a">
+<h2 id="orge798e0a">Data Pipeline Pieces</h2>
+<ul>
+<li>Ingres</li>
+<li>Storage</li>
+<li>Data Formats</li>
+<li>Queries</li>
+<li>Meta data</li>
+<li>Workflow</li>
+<li>Scheduling</li>
+
+</ul>
+
+</section>
+<section id="slide-orge83d75a">
+<h3 id="orge83d75a">Ingres: JSON + Kafka</h3>
+<ul>
+<li>All logs generated as json lines</li>
+<li>Logs are tailed and published to Kafka</li>
+<li>Hourly Buckets by type from Kafka stream</li>
+
+</ul>
+
+
+<div class="figure">
+<p><img src="./images/kafka.png" alt="kafka.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+Switching to Kafka this week from TreasureData/Fluentd
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgf912490">
+<h3 id="orgf912490">Storage: S3</h3>
+<ul>
+<li>Raw logs are source-of-truth for system</li>
+<li>Raw logs are stored in a production-logs bucket</li>
+<li>Structured path <code>datatype/yyyy/mm/dd/...</code></li>
+<li>Encrypted S3 bucket</li>
+
+</ul>
+
+
+<div class="figure">
+<p><img src="./images/s3.png" alt="s3.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+important to structure by time to allow pruning of queries
+presto/athena have to scan all of the files
+switching to encrypted bucket was not without incident.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orga938790">
+<h3 id="orga938790">Data Formats</h3>
+<ul>
+<li>json lines for all logs</li>
+<li><a href="http://parquet.apache.org">Apache parquet</a> for derived sources</li>
+
+</ul>
+
+
+<div class="figure">
+<p><img src="./images/parquet.png" alt="parquet.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+parquet is a columnar storage format for hadoop.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org34a0747">
+<h3 id="org34a0747">Queries: Spark and SparkSQL</h3>
+<ul>
+<li>Spark: Scala and python</li>
+<li>SparkSQL: SQL queries over JDBC</li>
+<li>Athena: Interactive queries from AWS console</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="./images/spark.png" alt="spark.png" />
+</p>
+</div>
+</section>
+<section id="slide-orgf97bbd4">
+<h3 id="orgf97bbd4">Metastore: AWS Glue Data Catalog</h3>
+<ul>
+<li>hive-compatible metadata</li>
+<li>Works across SparkSQL, Athena and Spectrum</li>
+<li>Daily partition metadata added by cron job.</li>
+
+</ul>
+
+
+<div class="figure">
+<p><img src="./images/aws-glue.png" alt="aws-glue.png" />
+</p>
+</div>
+</section>
+<section id="slide-org2f4e3c5">
+<h3 id="org2f4e3c5">Workflow</h3>
+<p>
+Luigi vs Azkaban vs Oozie vs Airflow
+</p>
+
+<ul>
+<li><a href="https://luigi.readthedocs.io/en/stable/#">Luigi</a>
+<ul>
+<li>python, Spotify, code-based DAG</li>
+
+</ul></li>
+<li><a href="https://azkaban.github.io/">Azkaban</a>
+<ul>
+<li>java, LinkedIn, GUI, hadoop only, time-based scheduling</li>
+
+</ul></li>
+<li><a href="http://oozie.apache.org/">Oozie</a>
+<ul>
+<li></li>
+
+</ul></li>
+<li><a href="https://airflow.incubator.apache.org/">Airflow</a>
+<ul>
+<li>python, AirBNB, code-based + GUI,</li>
+
+</ul></li>
+
+</ul>
+
+<p>
+<a href="https://www.bizety.com/2017/06/05/open-source-data-pipeline-luigi-vs-azkaban-vs-oozie-vs-airflow/">https://www.bizety.com/2017/06/05/open-source-data-pipeline-luigi-vs-azkaban-vs-oozie-vs-airflow/</a>
+</p>
+
+</section>
+<section id="slide-orgfa7f4be">
+<h3 id="orgfa7f4be">Airflow</h3>
+
+<div class="figure">
+<p><img src="./images/airflow.png" alt="airflow.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+Chosen for code-based configuration.
+defines the work flow but doesn't schedule it to run
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org9cd697b">
+<h3 id="org9cd697b">Scheduling - Jenkins</h3>
+<ul>
+<li>Automatic and manual triggers</li>
+<li>Compile sources for a workflow into binary artifacts</li>
+<li>Launch transient EMR cluster to run job</li>
+
+</ul>
+
+
+<div class="figure">
+<p><img src="./images/jenkins.png" alt="jenkins.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+Build all java&amp;scala from source
+pipelines are tricky, but possible.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orge59700f">
+<h2 id="orge59700f">Status</h2>
+
+<div class="figure">
+<p><img src="./images/under-construction.jpg" alt="under-construction.jpg" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgf6ae6cf">
+<h2 id="orgf6ae6cf">QUESTIONS?</h2>
+
+<div class="figure">
+<p><img src="./images/fry-questions.jpg" alt="fry-questions.jpg" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org3d10b6d">
+<h2 id="org3d10b6d">Contact:</h2>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Twitter</td>
+<td class="org-left">@spazm</td>
+</tr>
+
+<tr>
+<td class="org-left">Email</td>
+<td class="org-left">andrew.grangaard+scale2018@gmail.com</td>
+</tr>
+
+<tr>
+<td class="org-left">Blog</td>
+<td class="org-left"><a href="http://spaz.rocks">spaz.rocks</a></td>
+</tr>
+</tbody>
+</table>
+
+
+<div class="figure">
+<p><img src="./images/andrew-simba-gypsy.jpeg" alt="andrew-simba-gypsy.jpeg" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org312492c">
+<h2 id="org312492c">EXTRA</h2>
+
+</section>
+</section>
+<section>
+<section id="slide-orga433c3b">
+<h2 id="orga433c3b">What?</h2>
+<ul>
+<li>aggregation of raw data</li>
+<li>storage of raw data</li>
+<li>cleaning of data</li>
+<li></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org1c74b4d">
+<h2 id="org1c74b4d">Summary</h2>
+<p>
+I’ll share the architecture we design based on the trade-offs we considered and the choices we’ve made. 
+</p>
+
+<p>
+Building a data pipeline for stats and analysis is a big job.  We have a cornucopia of open source tools to choose from and so many decisions to make regarding:
+</p>
+
+<p>
+Tools
+orchestration
+storage formats
+streaming compute
+SQL integration
+data ingress, egress
+job vetting
+data integrity
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+margin: 0.20,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>

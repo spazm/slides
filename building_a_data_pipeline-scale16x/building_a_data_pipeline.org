@@ -1,0 +1,324 @@
+#+PANDOC_OPTIONS: format=org-mode
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.0.0/
+#+REVEAL_EXTRA_CSS: sky.css
+#+REVEAL_MARGIN: .2
+#+REVEAL_THEME_off: sky
+#+REVEAL_TITLE_SLIDE_BACKGROUND: ./images/andrew-simba-gypsy.jpeg
+#+REVEAL_PLUGINS: (highlight notes)
+#+TITLE: Building a Self-Service Data Pipeline with Apache Spark
+#+REVEAL_HembedLEVEL: 1
+#+OPTIONS: toc:0
+#+OPTIONS: ^:nil
+#+OPTIONS: num:nil
+#+AUTHOR: Andrew Grangaard
+#+EMAIL: andrew.grangaard+scale2018@gmail.com
+#+EMAIL: @spazm
+
+
+* [[./images/ziprecruiter-blacktext.svg]]
+
+#+BEGIN_QUOTE
+We’re Helping People Find Great Jobs, \\
+and Helping Employers Build Great Companies
+#+END_QUOTE
+
++ Scrappy, Data Driven, Experimental
+  + Crawl, Walk, Run!
++ Explosive Growth
+
+#+BEGIN_NOTES
++ > 8 Million Jobs
++ 1 Million Employers
++ 120 Million Jobseekers
+#+END_NOTES
+
+* Business Goal:
+
+Support Data Driven decision Making
+
++ Collect *All* the data
++ Ad-hoc Analysis for Insight
++ Aggegrate for Reporting
++ Support business experiments
++ Improve MTTIT - Mean Time to Idea Tested
+
+[[./images/collect-all-the-data.jpg]]
+
+* Data Core: Team Goal
+
+Scalability of 100x with current team size
+
+** What does that Mean ?
+
+ + Redshift DB can't handle 100x of raw data
+   + Stop loading raw data into Redshift DB!
+   + Generate aggregates and roll-ups outside of Redshift
+   + Load converted data to Redshift
+ + Provide access to raw data for ad-hoc analysis
+
+ #+BEGIN_NOTES
+ Redshift is Amazon's hosted Data Warehouse.
+ [[https://aws.amazon.com/redshift/][Amazon Redshift]]
+ Forked from Postgresql 8
+ #+END_NOTES
+
+
+** Build a Self-Service Streaming Data Platform to Support 20+ dev teams at 100x current usage
+** Build a Self-Service +Streaming+ Data Platform to Support 20+ dev teams at 100x current usage
+** Build a +Self-Service+ +Streaming+ Data Platform to Support 20+ dev teams at 100x current usage
+** Build a +Self-Service+ +Streaming+ Data Platform to Support /One/ dev team at 100x current usage
+** Build a +Self-Service+ +Streaming+ Data Platform to Support /One/ /Data/ team at 100x current usage
+
+* Definitions:
++ OLTP vs OLAP
++ Data Warehouse
++ ETL
++ Data Lake
++ Technologies
+
+** OLTP vs OLAP
+ + On-Line Transaction Processing
+   + Primary Database
+   + High number of transactions
+   + Insert / Update / Delete
+   + Powers primary application
+
+ + On-Line Analytical Processing
+   + Aggregated data
+   + Complex Queries
+   + Long running queries
+   + Powers reporting
+
+** Data Warehouse
+
+An OLAP database used for reporting.
+** ETL  
+
+ Extract - Transform - Load
+ [[./images/etl-diagram.jpg]]
+
+** ETL
+
++ Extract :: pull data from sources and convert to standardized format
++ Transform :: apply business rules and clean
++ Load :: Load into data warehouse for reporting 
+  + Generate roll-ups with SQL
+  + Run regular and ad-hoc reports against roll-ups
+
+#+BEGIN_NOTES
+
+#+END_NOTES
+
+** Data Lake
+
+/Artisanal and Unfiltered/
+
+[[./images/datawarehouse-vs-datalake.png]]
+
+#+BEGIN_NOTES
+structured vs unstructured
+schema on write vs on read 
+#+END_NOTES
+
+** Data Pipeline
+
+System to collect, clean, query, aggregate and publish data from source to analytic consumer.
+
+[[./images/datapipeline.png]]
+
+** Technologies
+
+Mapping of Open Source and Amazon products
+
+| Open Source      | Amazon Product        | Description                                                                              |
+|------------------+-----------------------+------------------------------------------------------------------------------------------|
+| [[http://prestodb.io][Presto]]           | Athena                | Distributed SQL Query Engine                                                             |
+|                  | Redshift Spectrum     | Run Redshift queries against S3                                                          |
+| [[http://kafka.apache.org][Kafka]]            | Kinesis               | Distributed Streaming Platform                                                           |
+| Ceph, etc        | S3                    | Extensible object/file store                                                             |
+
+** Technologies [cont]
+
+| Open Source      | Amazon Product        | Description                                                                              |
+|------------------+-----------------------+------------------------------------------------------------------------------------------|
+| [[http://spark.apache.org][Apache Spark]]     |                       | Engine for large-scale data processing.                                                  |
+| [[http://spark.apache.org/sql][Apache Spark SQL]] |                       | module for working with structured data.                                                 |
+| [[http://airflow.apache.org][Apache Airflow]]   |                       | workflow platform                                                                        |
+| Hive Metastore   | AWS Glue Data Catalog | central repository to store structural and operational metadata for all your data assets |
+
+* System Diagrams
+
+** Where we were
+
+[[./images/dw-v1.jpeg]]
+
+Scaling limit: Raw log data overwhelmed primary database
+
+#+BEGIN_NOTES
++ Wrote everything to primary (OLTP) database
++ Replicated to redshift (OLAP) database
++ cron jobs to create aggregates and reports
+#+END_NOTES
+
+** Where we are
+
+[[./images/dw-v2.jpeg]]
+
+Scaling limit: Raw log data overwhelmed primary database + Cron management
+
+#+BEGIN_NOTES
++ Removed logging from primary (OLTP) database
++ Logging in json to files to fluentd to S3
++ Loaded row level log data to Redshift
++ cron jobs to create aggregates and reports
+#+END_NOTES
+
+** Where we're going
+
+[[./images/dw-v3.jpeg]]
+
+Scaling limit: ?
+
+#+BEGIN_NOTES
++ Logging in json to files to kafka to S3
++ spark jobs to create roll-ups and aggregrates from raw S3
++ Load aggregate data to Redshift
++ no more cron jobs (we can dream)
++ Need to provide access to raw logs for ad-hoc analysis
+#+END_NOTES
+
+
+* Data Pipeline Pieces
+
++ Ingres
++ Storage
++ Data Formats
++ Queries
++ Meta data
++ Workflow
++ Scheduling
+ 
+** Ingres: JSON + Kafka
+
++ All logs generated as json lines
++ Logs are tailed and published to Kafka
++ Hourly Buckets by type from Kafka stream
+
+[[./images/kafka.png]]
+
+#+BEGIN_NOTES
+Switching to Kafka this week from TreasureData/Fluentd
+#+END_NOTES
+
+** Storage: S3
++ Raw logs are source-of-truth for system
++ Raw logs are stored in a production-logs bucket
++ Structured path =datatype/yyyy/mm/dd/...=
++ Encrypted S3 bucket
+
+[[./images/s3.png]]
+
+#+BEGIN_NOTES
+important to structure by time to allow pruning of queries
+presto/athena have to scan all of the files
+switching to encrypted bucket was not without incident.
+#+END_NOTES
+
+** Data Formats
+ + json lines for all logs
+ + [[http://parquet.apache.org][Apache parquet]] for derived sources
+
+[[./images/parquet.png]]
+
+ #+BEGIN_NOTES
+ parquet is a columnar storage format for hadoop.
+ #+END_NOTES
+
+** Queries: Spark and SparkSQL
+ + Spark: Scala and python
+ + SparkSQL: SQL queries over JDBC
+ + Athena: Interactive queries from AWS console
+[[./images/spark.png]]
+** Metastore: AWS Glue Data Catalog
++ hive-compatible metadata
++ Works across SparkSQL, Athena and Spectrum
++ Daily partition metadata added by cron job.
+
+[[./images/aws-glue.png]]
+** Workflow
+
+ Luigi vs Azkaban vs Oozie vs Airflow
+
+ + [[https://luigi.readthedocs.io/en/stable/#][Luigi]]
+   + python, Spotify, code-based DAG
+ + [[https://azkaban.github.io/][Azkaban]]
+   + java, LinkedIn, GUI, hadoop only, time-based scheduling
+ + [[http://oozie.apache.org/][Oozie]]
+   + 
+ + [[https://airflow.incubator.apache.org/][Airflow]]
+   + python, AirBNB, code-based + GUI, 
+
+ https://www.bizety.com/2017/06/05/open-source-data-pipeline-luigi-vs-azkaban-vs-oozie-vs-airflow/
+
+** Airflow
+
+[[./images/airflow.png]]
+
+#+BEGIN_NOTES
+Chosen for code-based configuration.
+defines the work flow but doesn't schedule it to run
+#+END_NOTES
+
+** Scheduling - Jenkins
+
++ Automatic and manual triggers
++ Compile sources for a workflow into binary artifacts
++ Launch transient EMR cluster to run job
+
+[[./images/jenkins.png]]
+
+#+BEGIN_NOTES
+Build all java&scala from source
+pipelines are tricky, but possible.
+#+END_NOTES
+
+* Status
+
+[[./images/under-construction.jpg]]
+
+* QUESTIONS?
+[[./images/fry-questions.jpg]]
+
+* Contact:
+
+| Twitter | @spazm                               |
+| Email   | andrew.grangaard+scale2018@gmail.com |
+| Blog    | [[http://spaz.rocks][spaz.rocks]]                           |
+
+[[./images/andrew-simba-gypsy.jpeg]]
+
+* EXTRA
+
+* What?
+
++ aggregation of raw data
++ storage of raw data
++ cleaning of data
++ 
+
+* Summary 
+I’ll share the architecture we design based on the trade-offs we considered and the choices we’ve made. 
+
+Building a data pipeline for stats and analysis is a big job.  We have a cornucopia of open source tools to choose from and so many decisions to make regarding:
+
+Tools
+orchestration
+storage formats
+streaming compute
+SQL integration
+data ingress, egress
+job vetting
+data integrity
+
+
+
