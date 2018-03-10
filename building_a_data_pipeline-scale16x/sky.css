@@ -51,7 +51,8 @@ body {
   word-wrap: break-word; }
 
 .reveal h1 {
-  font-size: 3.77em; }
+  /* font-size: 3.77em; */
+  font-size: 3.00em;}
 
 .reveal h2 {
   font-size: 2.11em; }
@@ -63,7 +64,9 @@ body {
   font-size: 1em; }
 
 .reveal h1 {
-  text-shadow: none; }
+    /* text-shadow: none; */
+    text-shadow: 5px 5px #ffffff;
+}
 
 /*********************************************
  * OTHER
@@ -132,10 +135,10 @@ body {
 .reveal pre {
   display: block;
   position: relative;
-  width: 90%;
-  margin: 20px auto;
+  width: 100%;
+  margin: 10px auto;
   text-align: left;
-  font-size: 0.55em;
+  font-size: 0.75em;
   font-family: monospace;
   line-height: 1.2em;
   word-wrap: break-word;
@@ -148,7 +151,7 @@ body {
   display: block;
   padding: 5px;
   overflow: auto;
-  max-height: 400px;
+  max-height: 600px;
   word-wrap: normal;
   background: #3F3F3F;
   color: #DCDCDC; }
