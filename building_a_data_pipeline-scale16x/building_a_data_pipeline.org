@@ -236,6 +236,7 @@ switching to encrypted bucket was not without incident.
 
 ** Queries: Spark and SparkSQL
  + Spark: Scala and python
+   + spark build tool: (sbt vs maven vs gradle)?
  + SparkSQL: SQL queries over JDBC
  + Athena: Interactive queries from AWS console
 [[./images/spark.png]]
@@ -254,9 +255,9 @@ switching to encrypted bucket was not without incident.
  + [[https://azkaban.github.io/][Azkaban]]
    + java, LinkedIn, GUI, hadoop only, time-based scheduling
  + [[http://oozie.apache.org/][Oozie]]
-   + 
+   + worklow scheduler for hadoop
  + [[https://airflow.incubator.apache.org/][Airflow]]
-   + python, AirBNB, code-based + GUI, 
+   + python, AirBNB, code-based + GUI,
 
  https://www.bizety.com/2017/06/05/open-source-data-pipeline-luigi-vs-azkaban-vs-oozie-vs-airflow/
 
@@ -281,6 +282,13 @@ defines the work flow but doesn't schedule it to run
 Build all java&scala from source
 pipelines are tricky, but possible.
 #+END_NOTES
+
+** Egress
+
++ Export aggregated data to redshift as Data Warehouse
++ Query Redshift via Periscope for Visualization and Dashboards
+
+[[./images/periscope-data.png]]
 
 * Status
 
