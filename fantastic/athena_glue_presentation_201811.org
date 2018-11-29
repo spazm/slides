@@ -47,79 +47,6 @@ Hive Compatible Metadata store from AWS Glue
   + =prod_unified_raw_v1= ::
     + raw event logs, requires interpreting json
     + 492 tables! who maintains?
-* Examples
-** Prod Logs
-#+BEGIN_SRC sql
-SELECT tag,
-         count(1) AS cnt
-FROM "core"."prod_unified_logs"
-WHERE log_date=20181128
-GROUP BY  1
-ORDER BY  2 DESC limit 10
-#+END_SRC
-
-10 minute query scans 450 gb of data. ($2.50 query)
-
-#+BEGIN_SRC 
-  	    tag	                          cnt
-1	app.search-team.job-server-trace  725481457
-2	app.search-team.nginx             407582049
-3	seo.job.labeler                   217798100
-4	app.nginx.access                  210645977
-5	app.search-team.lager             206278310
-6	perform-queued-tasks              147599866
-7	python3-6.stdout                  122406133
-8	app.search-team.impressions        62130730
-9	www.zr-proxy.access                61259979
-10	hiring-company-shielding           54364283
-#+END_SRC
-
-#+REVEAL: split
-[[./athena_images/athena_core_prod_unified.png]]
-
-** S3 Inventory
-*** yopass bucket via aws cli
- #+BEGIN_SRC 
- % aws s3 ls s3://yopass.ziprecruiter.com/                                                             :)-(master)-~/src/github/makeplus/makeplus
-                            PRE static/
- 2018-08-27 11:25:53         19 _redirects
- 2018-08-27 11:25:54        196 asset-manifest.json
- 2018-08-27 11:25:54       5558 favicon.ico
- 2018-08-27 11:25:54      21813 favicon.png
- 2018-08-27 11:25:54       1044 index.html
- 2018-08-27 11:25:54        317 manifest.json
- 2018-08-27 11:25:54         26 robots.txt
- 2018-08-27 11:25:54       3288 service-worker.js
-
- % aws s3 ls s3://yopass.ziprecruiter.com/static/                                                      :)-(master)-~/src/github/makeplus/makeplus
-                            PRE css/
-                            PRE js/
-
- % aws s3 ls s3://yopass.ziprecruiter.com/static/css/                                                  :)-(master)-~/src/github/makeplus/makeplus
- 2018-08-27 11:25:54     137510 main.6f022e07.css
- 2018-08-27 11:25:54     221969 main.6f022e07.css.map
-
- % aws s3 ls s3://yopass.ziprecruiter.com/static/js/                                                   :)-(master)-~/src/github/makeplus/makeplus
- 2018-08-27 11:25:54     632051 main.6371b98d.js
- 2018-08-27 11:25:54    3534838 main.6371b98d.js.map
- #+END_SRC
-*** yopass bucket via s3_inventory
-#+BEGIN_SRC sql
-SELECT 
-  key
-  , is_latest
-  , is_delete_marker
-  , size
-
-FROM "prod_inventory"."yopass_ziprecruiter_com"
-WHERE 
-  dt='2018-11-24-08-00'
-ORDER BY key DESC 
-#+END_SRC
-
-#+REVEAL: split
-[[./athena_images/athena_results_yopass.pn]]
-
 * Query Athena
 
 1. =athena= tool in AWS Console.
@@ -211,6 +138,79 @@ aws glue get-tables --database-name=core |jq '.TableList[].Name'
 "prod_unified_logs"
 "stg_unified_logs"
 #+END_SRC
+* Examples
+** Prod Logs
+#+BEGIN_SRC sql
+SELECT tag,
+         count(1) AS cnt
+FROM "core"."prod_unified_logs"
+WHERE log_date=20181128
+GROUP BY  1
+ORDER BY  2 DESC limit 10
+#+END_SRC
+
+10 minute query scans 450 gb of data. ($2.50 query)
+
+#+BEGIN_SRC 
+  	    tag	                          cnt
+1	app.search-team.job-server-trace  725481457
+2	app.search-team.nginx             407582049
+3	seo.job.labeler                   217798100
+4	app.nginx.access                  210645977
+5	app.search-team.lager             206278310
+6	perform-queued-tasks              147599866
+7	python3-6.stdout                  122406133
+8	app.search-team.impressions        62130730
+9	www.zr-proxy.access                61259979
+10	hiring-company-shielding           54364283
+#+END_SRC
+
+#+REVEAL: split
+[[./athena_images/athena_core_prod_unified.png]]
+
+** S3 Inventory
+*** yopass bucket via aws cli
+ #+BEGIN_SRC 
+ % aws s3 ls s3://yopass.ziprecruiter.com/                                                             :)-(master)-~/src/github/makeplus/makeplus
+                            PRE static/
+ 2018-08-27 11:25:53         19 _redirects
+ 2018-08-27 11:25:54        196 asset-manifest.json
+ 2018-08-27 11:25:54       5558 favicon.ico
+ 2018-08-27 11:25:54      21813 favicon.png
+ 2018-08-27 11:25:54       1044 index.html
+ 2018-08-27 11:25:54        317 manifest.json
+ 2018-08-27 11:25:54         26 robots.txt
+ 2018-08-27 11:25:54       3288 service-worker.js
+
+ % aws s3 ls s3://yopass.ziprecruiter.com/static/                                                      :)-(master)-~/src/github/makeplus/makeplus
+                            PRE css/
+                            PRE js/
+
+ % aws s3 ls s3://yopass.ziprecruiter.com/static/css/                                                  :)-(master)-~/src/github/makeplus/makeplus
+ 2018-08-27 11:25:54     137510 main.6f022e07.css
+ 2018-08-27 11:25:54     221969 main.6f022e07.css.map
+
+ % aws s3 ls s3://yopass.ziprecruiter.com/static/js/                                                   :)-(master)-~/src/github/makeplus/makeplus
+ 2018-08-27 11:25:54     632051 main.6371b98d.js
+ 2018-08-27 11:25:54    3534838 main.6371b98d.js.map
+ #+END_SRC
+*** yopass bucket via s3_inventory
+#+BEGIN_SRC sql
+SELECT 
+  key
+  , is_latest
+  , is_delete_marker
+  , size
+
+FROM "prod_inventory"."yopass_ziprecruiter_com"
+WHERE 
+  dt='2018-11-24-08-00'
+ORDER BY key DESC 
+#+END_SRC
+
+#+REVEAL: split
+[[./athena_images/athena_results_yopass.pn]]
+
 * FIN(N)
 [[https://resources.bamboohr.com/images/photo_male.png]]
 * FIN
