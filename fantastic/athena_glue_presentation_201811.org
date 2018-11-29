@@ -209,7 +209,7 @@ ORDER BY key DESC
 #+END_SRC
 
 #+REVEAL: split
-[[./athena_images/athena_results_yopass.pn]]
+[[./athena_images/athena_results_yopass.png]]
 
 * FIN(N)
 [[https://resources.bamboohr.com/images/photo_male.png]]

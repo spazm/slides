@@ -32,8 +32,8 @@
 
 
 <section>
-<section id="slide-org4152ce9">
-<h2 id="org4152ce9">Amazon Athena</h2>
+<section id="slide-org45bc8d3">
+<h2 id="org45bc8d3">Amazon Athena</h2>
 <p>
 Service to analyze data in S3 using SQL (prestoDB)
 <img src="./athena_images/2-amazon_athena.png" alt="2-amazon_athena.png" />
@@ -42,8 +42,8 @@ Service to analyze data in S3 using SQL (prestoDB)
 </section>
 </section>
 <section>
-<section id="slide-org4bc78b6">
-<h2 id="org4bc78b6">Glue Data Catalog</h2>
+<section id="slide-org337d027">
+<h2 id="org337d027">Glue Data Catalog</h2>
 <p>
 Hive Compatible Metadata store from AWS Glue
 <img src="./athena_images/aws-glue-metadata-screenshot.png" alt="aws-glue-metadata-screenshot.png" />
@@ -60,8 +60,8 @@ Hive Compatible Metadata store from AWS Glue
 </section>
 </section>
 <section>
-<section id="slide-org129644f">
-<h2 id="org129644f">Data</h2>
+<section id="slide-org484b71b">
+<h2 id="org484b71b">Data</h2>
 <dl>
 <dt><code>core</code></dt><dd><ul>
 <li>cloudflare, cloudtrail, and elb logs</li>
@@ -79,8 +79,8 @@ Hive Compatible Metadata store from AWS Glue
 
 </dl>
 </section>
-<section id="slide-orgacc8e48">
-<h3 id="orgacc8e48">Data: Unified logs</h3>
+<section id="slide-org8db02dc">
+<h3 id="org8db02dc">Data: Unified logs</h3>
 <dl>
 <dt><code>core.prod_unified_logs</code></dt><dd>3 days worth of all events, partitioned by <code>tag</code>, <code>log_date</code>, <code>hour</code></dd>
 <dt><code>raw_unified</code></dt><dd>database per tag, raw json logs partitioned by <code>log_date</code></dd>
@@ -100,8 +100,8 @@ Hive Compatible Metadata store from AWS Glue
 </section>
 </section>
 <section>
-<section id="slide-org29a905d">
-<h2 id="org29a905d">Query Athena</h2>
+<section id="slide-org513f0e7">
+<h2 id="org513f0e7">Query Athena</h2>
 <ol>
 <li><code>athena</code> tool in AWS Console.</li>
 <li>API, using <code>boto</code> or similar tool.</li>
@@ -111,8 +111,8 @@ Hive Compatible Metadata store from AWS Glue
 </section>
 </section>
 <section>
-<section id="slide-org894f474">
-<h2 id="org894f474">AWS Console Athena</h2>
+<section id="slide-org7a7c109">
+<h2 id="org7a7c109">AWS Console Athena</h2>
 
 <div class="figure">
 <p><img src="./athena_images/3.1-aws-console-login.png" alt="3.1-aws-console-login.png" />
@@ -140,24 +140,24 @@ Hive Compatible Metadata store from AWS Glue
 </p>
 </div>
 </section>
-<section id="slide-orgc1b59e3">
-<h3 id="orgc1b59e3">Show Databases</h3>
+<section id="slide-org6e84378">
+<h3 id="org6e84378">Show Databases</h3>
 
 <div class="figure">
 <p><img src="./athena_images/4-athena-database-list.png" alt="4-athena-database-list.png" />
 </p>
 </div>
 </section>
-<section id="slide-org1cb83d1">
-<h3 id="org1cb83d1">Show Tables in Database</h3>
+<section id="slide-org812757a">
+<h3 id="org812757a">Show Tables in Database</h3>
 
 <div class="figure">
 <p><img src="./athena_images/5-athena-prod_inventory.png" alt="5-athena-prod_inventory.png" />
 </p>
 </div>
 </section>
-<section id="slide-orgc3e4337">
-<h3 id="orgc3e4337">Preview Table</h3>
+<section id="slide-orgbe128ab">
+<h3 id="orgbe128ab">Preview Table</h3>
 
 <div class="figure">
 <p><img src="./athena_images/5-athena_prod_inventory_describe_table.png" alt="5-athena_prod_inventory_describe_table.png" />
@@ -167,13 +167,13 @@ Hive Compatible Metadata store from AWS Glue
 </section>
 </section>
 <section>
-<section id="slide-org97b03eb">
-<h2 id="org97b03eb">aws cmdline</h2>
-<div class="outline-text-2" id="text-org97b03eb">
+<section id="slide-orga6468ba">
+<h2 id="orga6468ba">aws cmdline</h2>
+<div class="outline-text-2" id="text-orga6468ba">
 </div>
 </section>
-<section id="slide-org9431a08">
-<h3 id="org9431a08">all databases</h3>
+<section id="slide-orga8f6d35">
+<h3 id="orga8f6d35">all databases</h3>
 <div class="org-src-container">
 
 <pre><code class="shell" >aws glue get-databases | jq -c '.DatabaseList[]|.Name'
@@ -227,8 +227,8 @@ Hive Compatible Metadata store from AWS Glue
 </pre>
 
 </section>
-<section id="slide-org30b8249">
-<h3 id="org30b8249"><code>core</code> database table</h3>
+<section id="slide-orgae2cc31">
+<h3 id="orgae2cc31"><code>core</code> database table</h3>
 <div class="org-src-container">
 
 <pre><code class="shell" >aws glue get-tables --database-name=core |jq '.TableList[].Name'
@@ -249,13 +249,13 @@ Hive Compatible Metadata store from AWS Glue
 </section>
 </section>
 <section>
-<section id="slide-orgcf9e534">
-<h2 id="orgcf9e534">Examples</h2>
-<div class="outline-text-2" id="text-orgcf9e534">
+<section id="slide-orgcecbf9e">
+<h2 id="orgcecbf9e">Examples</h2>
+<div class="outline-text-2" id="text-orgcecbf9e">
 </div>
 </section>
-<section id="slide-org623ccfe">
-<h3 id="org623ccfe">Prod Logs</h3>
+<section id="slide-org94dc688">
+<h3 id="org94dc688">Prod Logs</h3>
 <div class="org-src-container">
 
 <pre><code class="sql" >SELECT tag,
@@ -294,13 +294,13 @@ ORDER BY  2 DESC limit 10
 </div>
 
 </section>
-<section id="slide-orgd0c8c24">
-<h3 id="orgd0c8c24">S3 Inventory</h3>
-<div class="outline-text-3" id="text-orgd0c8c24">
+<section id="slide-orgf3d280e">
+<h3 id="orgf3d280e">S3 Inventory</h3>
+<div class="outline-text-3" id="text-orgf3d280e">
 </div>
 </section>
-<section id="slide-org1673c5d">
-<h4 id="org1673c5d">yopass bucket via aws cli</h4>
+<section id="slide-orgad03df3">
+<h4 id="orgad03df3">yopass bucket via aws cli</h4>
 <pre  class="example">
 % aws s3 ls s3://yopass.ziprecruiter.com/                                                             :)-(master)-~/src/github/makeplus/makeplus
                            PRE static/
@@ -326,8 +326,8 @@ ORDER BY  2 DESC limit 10
 2018-08-27 11:25:54    3534838 main.6371b98d.js.map
 </pre>
 </section>
-<section id="slide-org6d7c1c3">
-<h4 id="org6d7c1c3">yopass bucket via s3_inventory</h4>
+<section id="slide-org4d27055">
+<h4 id="org4d27055">yopass bucket via s3_inventory</h4>
 <div class="org-src-container">
 
 <pre><code class="sql" >SELECT 
@@ -345,15 +345,17 @@ ORDER BY key DESC
 
 </section>
 <section >
-<p>
-<a href="./athena_images/athena_results_yopass.pn">./athena_images/athena_results_yopass.pn</a>
+
+<div class="figure">
+<p><img src="./athena_images/athena_results_yopass.png" alt="athena_results_yopass.png" />
 </p>
+</div>
 
 </section>
 </section>
 <section>
-<section id="slide-org8e1343a">
-<h2 id="org8e1343a">FIN(N)</h2>
+<section id="slide-org82c48dd">
+<h2 id="org82c48dd">FIN(N)</h2>
 
 <div class="figure">
 <p><img src="https://resources.bamboohr.com/images/photo_male.png" alt="photo_male.png" />
@@ -362,13 +364,13 @@ ORDER BY key DESC
 </section>
 </section>
 <section>
-<section id="slide-org0858f79">
-<h2 id="org0858f79">FIN</h2>
+<section id="slide-orgb7dd3c5">
+<h2 id="orgb7dd3c5">FIN</h2>
 </section>
 </section>
 <section>
-<section id="slide-org0576e02">
-<h2 id="org0576e02">EXTRA Images TODO</h2>
+<section id="slide-org51c0391">
+<h2 id="org51c0391">EXTRA Images TODO</h2>
 </section>
 <section >
 
