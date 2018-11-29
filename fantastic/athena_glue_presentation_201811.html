@@ -7,19 +7,19 @@
 <style type="text/css">
 .underline { text-decoration: underline; }
 </style>
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
 
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/moon.css" id="theme"/>
 
 <link rel="stylesheet" href="sky.css"/>
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
 <!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
     if( window.location.search.match( /print-pdf/gi ) ) {
         var link = document.createElement( 'link' );
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        link.href = 'https://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
         document.getElementsByTagName( 'head' )[0].appendChild( link );
     }
 </script>
@@ -32,8 +32,8 @@
 
 
 <section>
-<section id="slide-orgde22a77">
-<h2 id="orgde22a77">Amazon Athena</h2>
+<section id="slide-org2ad1117">
+<h2 id="org2ad1117">Amazon Athena</h2>
 <p>
 Service to analyze data in S3 using SQL (prestoDB)
 <img src="./athena_images/2-amazon_athena.png" alt="2-amazon_athena.png" />
@@ -42,8 +42,8 @@ Service to analyze data in S3 using SQL (prestoDB)
 </section>
 </section>
 <section>
-<section id="slide-org31b22cc">
-<h2 id="org31b22cc">Glue Data Catalog</h2>
+<section id="slide-org4a923ee">
+<h2 id="org4a923ee">Glue Data Catalog</h2>
 <p>
 Hive Compatible Metadata store from AWS Glue
 <img src="./athena_images/aws-glue-metadata-screenshot.png" alt="aws-glue-metadata-screenshot.png" />
@@ -60,8 +60,8 @@ Hive Compatible Metadata store from AWS Glue
 </section>
 </section>
 <section>
-<section id="slide-org7bd0fe9">
-<h2 id="org7bd0fe9">Data</h2>
+<section id="slide-org0a94959">
+<h2 id="org0a94959">Data</h2>
 <dl>
 <dt><code>core</code></dt><dd><ul>
 <li>cloudflare, cloudtrail, and elb logs</li>
@@ -79,8 +79,8 @@ Hive Compatible Metadata store from AWS Glue
 
 </dl>
 </section>
-<section id="slide-org78a8d1e">
-<h3 id="org78a8d1e">Data: Unified logs</h3>
+<section id="slide-orgab3d808">
+<h3 id="orgab3d808">Data: Unified logs</h3>
 <dl>
 <dt><code>core.prod_unified_logs</code></dt><dd>3 days worth of all events, partitioned by <code>tag</code>, <code>log_date</code>, <code>hour</code></dd>
 <dt><code>raw_unified</code></dt><dd>database per tag, raw json logs partitioned by <code>log_date</code></dd>
@@ -100,13 +100,13 @@ Hive Compatible Metadata store from AWS Glue
 </section>
 </section>
 <section>
-<section id="slide-orgb3e070e">
-<h2 id="orgb3e070e">Examples</h2>
-<div class="outline-text-2" id="text-orgb3e070e">
+<section id="slide-org01daaf5">
+<h2 id="org01daaf5">Examples</h2>
+<div class="outline-text-2" id="text-org01daaf5">
 </div>
 </section>
-<section id="slide-org9d0e0ef">
-<h3 id="org9d0e0ef">Prod Logs</h3>
+<section id="slide-org7ed1c3a">
+<h3 id="org7ed1c3a">Prod Logs</h3>
 <div class="org-src-container">
 
 <pre><code class="sql" >SELECT tag,
@@ -145,13 +145,13 @@ ORDER BY  2 DESC limit 10
 </div>
 
 </section>
-<section id="slide-org0c6cc9b">
-<h3 id="org0c6cc9b">S3 Inventory</h3>
-<div class="outline-text-3" id="text-org0c6cc9b">
+<section id="slide-orgd2a98a3">
+<h3 id="orgd2a98a3">S3 Inventory</h3>
+<div class="outline-text-3" id="text-orgd2a98a3">
 </div>
 </section>
-<section id="slide-orgb10e83e">
-<h4 id="orgb10e83e">yopass bucket via aws cli</h4>
+<section id="slide-orgca8b58c">
+<h4 id="orgca8b58c">yopass bucket via aws cli</h4>
 <pre  class="example">
 % aws s3 ls s3://yopass.ziprecruiter.com/                                                             :)-(master)-~/src/github/makeplus/makeplus
                            PRE static/
@@ -177,8 +177,8 @@ ORDER BY  2 DESC limit 10
 2018-08-27 11:25:54    3534838 main.6371b98d.js.map
 </pre>
 </section>
-<section id="slide-org43a3842">
-<h4 id="org43a3842">yopass bucket via s3_inventory</h4>
+<section id="slide-org856e384">
+<h4 id="org856e384">yopass bucket via s3_inventory</h4>
 <div class="org-src-container">
 
 <pre><code class="sql" >SELECT 
@@ -194,6 +194,8 @@ ORDER BY key DESC
 </code></pre>
 </div>
 
+</section>
+<section >
 <pre  class="example">
 | bucket                  | key                              | version_id | is_latest | is_delete_marker |    size | last_modified_date      | e_tag                            | storage_class | is_multipart_uploaded | replication_status | encryption_status |               dt |
 | yopass.ziprecruiter.com | static/js/main.6371b98d.js.map   |            | true      | false            | 3534838 | 2018-08-27 18:25:54.000 | dae2162b1050af0ec34dfff9595c01bf | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
@@ -213,8 +215,8 @@ ORDER BY key DESC
 </section>
 </section>
 <section>
-<section id="slide-org01ae907">
-<h2 id="org01ae907">Query Athena</h2>
+<section id="slide-org00b3d66">
+<h2 id="org00b3d66">Query Athena</h2>
 <ol>
 <li><code>athena</code> tool in AWS Console.</li>
 <li>API, using <code>boto</code> or similar tool.</li>
@@ -224,8 +226,8 @@ ORDER BY key DESC
 </section>
 </section>
 <section>
-<section id="slide-orge16a31a">
-<h2 id="orge16a31a">AWS Console Athena</h2>
+<section id="slide-orgd23ec47">
+<h2 id="orgd23ec47">AWS Console Athena</h2>
 
 <div class="figure">
 <p><img src="./athena_images/3.1-aws-console-login.png" alt="3.1-aws-console-login.png" />
@@ -253,24 +255,24 @@ ORDER BY key DESC
 </p>
 </div>
 </section>
-<section id="slide-org4deff7d">
-<h3 id="org4deff7d">Show Databases</h3>
+<section id="slide-orge0efcf4">
+<h3 id="orge0efcf4">Show Databases</h3>
 
 <div class="figure">
 <p><img src="./athena_images/4-athena-database-list.png" alt="4-athena-database-list.png" />
 </p>
 </div>
 </section>
-<section id="slide-org88d7f82">
-<h3 id="org88d7f82">Show Tables in Database</h3>
+<section id="slide-org16487a3">
+<h3 id="org16487a3">Show Tables in Database</h3>
 
 <div class="figure">
 <p><img src="./athena_images/5-athena-prod_inventory.png" alt="5-athena-prod_inventory.png" />
 </p>
 </div>
 </section>
-<section id="slide-org2cda60b">
-<h3 id="org2cda60b">Preview Table</h3>
+<section id="slide-org4cd9578">
+<h3 id="org4cd9578">Preview Table</h3>
 
 <div class="figure">
 <p><img src="./athena_images/5-athena_prod_inventory_describe_table.png" alt="5-athena_prod_inventory_describe_table.png" />
@@ -280,13 +282,13 @@ ORDER BY key DESC
 </section>
 </section>
 <section>
-<section id="slide-orgdfbcbce">
-<h2 id="orgdfbcbce">aws cmdline</h2>
-<div class="outline-text-2" id="text-orgdfbcbce">
+<section id="slide-orgd1bb63b">
+<h2 id="orgd1bb63b">aws cmdline</h2>
+<div class="outline-text-2" id="text-orgd1bb63b">
 </div>
 </section>
-<section id="slide-orgb908d7b">
-<h3 id="orgb908d7b">all databases</h3>
+<section id="slide-orgcda23d6">
+<h3 id="orgcda23d6">all databases</h3>
 <div class="org-src-container">
 
 <pre><code class="shell" >aws glue get-databases | jq -c '.DatabaseList[]|.Name'
@@ -340,8 +342,8 @@ ORDER BY key DESC
 </pre>
 
 </section>
-<section id="slide-orgd26d5b0">
-<h3 id="orgd26d5b0"><code>core</code> database table</h3>
+<section id="slide-orge7a40df">
+<h3 id="orge7a40df"><code>core</code> database table</h3>
 <div class="org-src-container">
 
 <pre><code class="shell" >aws glue get-tables --database-name=core |jq '.TableList[].Name'
@@ -362,8 +364,23 @@ ORDER BY key DESC
 </section>
 </section>
 <section>
-<section id="slide-orgced5619">
-<h2 id="orgced5619">EXTRA Images TODO</h2>
+<section id="slide-orgf6b712f">
+<h2 id="orgf6b712f">FIN(N)</h2>
+
+<div class="figure">
+<p><img src="https://resources.bamboohr.com/images/photo_male.png" alt="photo_male.png" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org2421073">
+<h2 id="org2421073">FIN</h2>
+</section>
+</section>
+<section>
+<section id="slide-org5aea568">
+<h2 id="org5aea568">EXTRA Images TODO</h2>
 </section>
 <section >
 
@@ -382,8 +399,8 @@ ORDER BY key DESC
 </section>
 </div>
 </div>
-<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
-<script src="http://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="https://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
 
 <script>
 // Full list of configuration options available here:
@@ -411,8 +428,8 @@ multiplex: {
 
 // Optional libraries used to extend on reveal.js
 dependencies: [
- { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
- { src: 'http://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
 });
 </script>
 </body>
