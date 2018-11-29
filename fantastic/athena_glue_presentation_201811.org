@@ -118,21 +118,7 @@ ORDER BY key DESC
 #+END_SRC
 
 #+REVEAL: split
-#+BEGIN_SRC 
-| bucket                  | key                              | version_id | is_latest | is_delete_marker |    size | last_modified_date      | e_tag                            | storage_class | is_multipart_uploaded | replication_status | encryption_status |               dt |
-| yopass.ziprecruiter.com | static/js/main.6371b98d.js.map   |            | true      | false            | 3534838 | 2018-08-27 18:25:54.000 | dae2162b1050af0ec34dfff9595c01bf | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | static/js/main.6371b98d.js       |            | true      | false            |  632051 | 2018-08-27 18:25:54.000 | 07235ee851afeb53e47e571a2f819011 | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | static/css/main.6f022e07.css.map |            | true      | false            |  221969 | 2018-08-27 18:25:54.000 | 719b88e811786e2f7406fddafbf6fa32 | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | static/css/main.6f022e07.css     |            | true      | false            |  137510 | 2018-08-27 18:25:54.000 | 59f7904ec4457a7317dc9ce2e2083efc | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | service-worker.js                |            | true      | false            |    3288 | 2018-08-27 18:25:54.000 | a49550fa0b44d3fcaab0a59418b2f285 | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | robots.txt                       |            | true      | false            |      26 | 2018-08-27 18:25:54.000 | f71d20196d4caf35b6a670db8c70b03d | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | manifest.json                    |            | true      | false            |     317 | 2018-08-27 18:25:54.000 | 730915ec2725cf6721080a6516b23f15 | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | index.html                       |            | true      | false            |    1044 | 2018-08-27 18:25:54.000 | 042dff2ef6cdbbc1577324271281406f | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | favicon.png                      |            | true      | false            |   21813 | 2018-08-27 18:25:54.000 | eb26a2b691f72c261a71414d437d2809 | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | favicon.ico                      |            | true      | false            |    5558 | 2018-08-27 18:25:54.000 | 13cdc50ac3dc81069fd20ff1c00ba25c | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | asset-manifest.json              |            | true      | false            |     196 | 2018-08-27 18:25:54.000 | 9931adbd324d5e67cab395f07babdfbe | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-| yopass.ziprecruiter.com | _redirects                       |            | true      | false            |      19 | 2018-08-27 18:25:53.000 | 24451388c2fc69419fac47ca08311257 | STANDARD      | false                 |                    | SSE-S3            | 2018-11-24-08-00 |
-#+END_SRC
+[[./athena_images/athena_results_yopass.pn]]
 
 * Query Athena
 
